@@ -1,0 +1,94 @@
+import java.util.Scanner;
+
+public class OnlineExam {
+    private static Scanner scanner = new Scanner(System.in);
+    private static int totalTime = 60; // total time in seconds
+    private static int remainingTime = totalTime; // remaining time in seconds
+    private static boolean isLoggedIn = false;
+    private static String username = "";
+    private static String password = "";
+    
+    public static void main(String[] args) {
+        showMenu();
+    }
+    
+    private static void showMenu() {
+        while (true) {
+            System.out.println("1. Login");
+            System.out.println("2. Update profile and password");
+            System.out.println("3. Start exam");
+            System.out.println("4. Exit");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    login();
+                    break;
+                case 2:
+                    updateProfile();
+                    break;
+                case 3:
+                    startExam();
+                    break;
+                case 4:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        }
+    }
+    
+    private static void login() {
+        System.out.print("Enter username: ");
+        String enteredUsername = scanner.next();
+        System.out.print("Enter password: ");
+        String enteredPassword = scanner.next();
+        if (enteredUsername.equals(username) && enteredPassword.equals(password)) {
+            System.out.println("Login successful");
+            isLoggedIn = true;
+        } else {
+            System.out.println("Incorrect username or password");
+        }
+    }
+    
+    private static void updateProfile() {
+        if (!isLoggedIn) {
+            System.out.println("Please login first");
+            return;
+        }
+        System.out.print("Enter new username: ");
+        username = scanner.next();
+        System.out.print("Enter new password: ");
+        password = scanner.next();
+        System.out.println("Profile updated successfully");
+    }
+    
+    private static void startExam() {
+        if (!isLoggedIn) {
+            System.out.println("Please login first");
+            return;
+        }
+        System.out.println("You have " + totalTime + " seconds to complete the exam.");
+        long startTime = System.currentTimeMillis();
+        while (remainingTime > 0) {
+            displayQuestion();
+            int selectedOption = scanner.nextInt();
+            // process selected option
+            remainingTime = totalTime - (int)((System.currentTimeMillis() - startTime) / 1000);
+        }
+        // submit exam automatically when time runs out
+        System.out.println("Time's up! Your exam has been automatically submitted.");
+        logout();
+    }
+    
+    private static void displayQuestion() {
+        // display MCQ question and options
+    }
+    
+    private static void logout() {
+        isLoggedIn = false;
+        username = "";
+        password = "";
+        System.out.println("You have been logged out");
+    }
+}
