@@ -1,0 +1,64 @@
+import java.util.Scanner;
+
+public class ReservationSystem {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Define the number of available seats
+        int totalSeats = 10;
+
+        // Create an array to store the availability of seats
+        boolean[] seats = new boolean[totalSeats];
+
+        // Initialize all seats as available
+        for (int i = 0; i < totalSeats; i++) {
+            seats[i] = true;
+        }
+
+        while (true) {
+            // Display the number of available seats
+            System.out.println("Number of available seats: " + getAvailableSeats(seats));
+
+            // Ask the user if they want to reserve a seat
+            System.out.print("Do you want to reserve a seat? (Y/N): ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("y")) {
+                // Ask the user to select a seat number
+                System.out.print("Enter seat number (1-" + totalSeats + "): ");
+                int seatNumber = scanner.nextInt();
+
+                // Check if the seat is available
+                if (seatNumber > 0 && seatNumber <= totalSeats && seats[seatNumber - 1]) {
+                    // Reserve the seat
+                    seats[seatNumber - 1] = false;
+                    System.out.println("Seat " + seatNumber + " reserved.");
+                } else {
+                    System.out.println("Invalid seat number or seat already reserved.");
+                }
+
+                // Consume the remaining newline character
+                scanner.nextLine();
+            } else if (input.equalsIgnoreCase("n")) {
+                // Exit the loop if the user does not want to reserve a seat
+                break;
+            } else {
+                System.out.println("Invalid input.");
+            }
+        }
+    }
+
+    // Helper method to count the number of available seats
+    private static int getAvailableSeats(boolean[] seats) {
+        int count = 0;
+
+        for (int i = 0; i < seats.length; i++) {
+            if (seats[i]) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+}
